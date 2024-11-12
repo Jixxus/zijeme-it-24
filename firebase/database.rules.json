@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "activePage": {
+      ".write": "auth != null && auth.uid == root.child('admin').val()"
+    },
+    "admin": {
+      ".read": false
+    },
+    "users": {
+      "$userId": {
+        ".write": "auth != null && auth.uid == $userId"
+      }
+    },
+    ".read": true,
+    ".write": false
+  }
+}
