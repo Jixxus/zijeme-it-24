@@ -1,9 +1,17 @@
 "use client";
 
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { ref } from "firebase/database";
+import { DotIcon } from "lucide-react";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
-import { Bar, BarChart, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, LabelList, XAxis, YAxis } from "recharts";
 
 export default function Presentation() {
   const database = useDatabase();
@@ -73,52 +81,94 @@ export default function Presentation() {
   } satisfies ChartConfig;
 
   return (
-    <div className="p-10">
-      <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-        <BarChart
-          accessibilityLayer
-          data={technologies}
-          layout="vertical"
-          margin={{
-            left: 0,
-          }}
-        >
-          <XAxis hide type="number" />
-          <YAxis
-            dataKey="technology"
-            type="category"
-            tickLine={false}
-            tickMargin={20}
-            fontSize={20}
-            width={200}
-            axisLine={false}
-            tickFormatter={(value) =>
-              chartConfig[value as keyof typeof chartConfig]?.label
-            }
-          />
-          <Bar
-            dataKey="a"
-            stackId="a"
-            radius={10}
-            maxBarSize={50}
-            fill="#e26352"
-          ></Bar>
-          <Bar
-            dataKey="b"
-            stackId="a"
-            radius={10}
-            maxBarSize={50}
-            fill="#7a82e4"
-          ></Bar>
-          <Bar
-            dataKey="c"
-            stackId="a"
-            radius={10}
-            maxBarSize={50}
-            fill="#409d44"
-          ></Bar>
-        </BarChart>
-      </ChartContainer>
-    </div>
+    <Card className="flex flex-col w-full h-full">
+      <CardHeader>
+        <CardTitle>Znalost technologií</CardTitle>
+        <CardDescription>
+          <div className="flex gap-4">
+            <div className="flex items-center">
+              <DotIcon className="text-[#e26352]" size={40}></DotIcon> Neznám
+            </div>
+            <div className="flex items-center">
+              <DotIcon className="text-[#7a82e4]" size={40}></DotIcon> Znám
+            </div>
+            <div className="flex items-center">
+              <DotIcon className="text-[#409d44]" size={40}></DotIcon> Použil
+              jsem
+            </div>
+          </div>
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="flex w-full h-full">
+        <ChartContainer config={chartConfig}>
+          <BarChart accessibilityLayer data={technologies} layout="vertical">
+            <XAxis hide type="number" />
+            <YAxis
+              dataKey="technology"
+              type="category"
+              tickLine={false}
+              tickMargin={20}
+              fontSize={20}
+              width={200}
+              axisLine={false}
+              tickFormatter={(value) =>
+                chartConfig[value as keyof typeof chartConfig]?.label
+              }
+            />
+            <Bar
+              dataKey="a"
+              stackId="a"
+              radius={10}
+              maxBarSize={50}
+              fill="#e26352"
+            >
+              <LabelList
+                dataKey={"a"}
+                position="middle"
+                className="fill-[#fff]"
+                stroke="none"
+                offset={0}
+                fontSize={25}
+                formatter={(value: number) => (value === 0 ? "" : value)}
+              />
+            </Bar>
+            <Bar
+              dataKey="b"
+              stackId="a"
+              radius={10}
+              maxBarSize={50}
+              fill="#7a82e4"
+            >
+              <LabelList
+                dataKey={"b"}
+                position="middle"
+                className="fill-[#fff]"
+                stroke="none"
+                offset={0}
+                fontSize={25}
+                formatter={(value: number) => (value === 0 ? "" : value)}
+              />
+            </Bar>
+            <Bar
+              dataKey="c"
+              stackId="a"
+              radius={10}
+              maxBarSize={50}
+              fill="#409d44"
+            >
+              <LabelList
+                dataKey={"c"}
+                position="middle"
+                className="fill-[#fff]"
+                stroke="none"
+                offset={0}
+                fontSize={25}
+                formatter={(value: number) => (value === 0 ? "" : value)}
+              />
+            </Bar>
+          </BarChart>
+        </ChartContainer>
+      </CardContent>
+    </Card>
   );
 }

@@ -77,7 +77,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           alt="ŽijemeIT Logo"
         ></Image>
       </div>
-      <div className="h-full">{children}</div>
+      <div className="flex h-full w-full p-4">{children}</div>
     </div>
   );
 }

@@ -19,7 +19,7 @@ export default function IdleState({
   if (state === false) {
     return (
       <>
-        <LoaderCircleIcon className="text-slate-600 "></LoaderCircleIcon>
+        <LoaderCircleIcon className="text-slate-600"></LoaderCircleIcon>
       </>
     );
   }

@@ -1,5 +1,12 @@
 "use client";
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { ref } from "firebase/database";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
@@ -29,7 +36,7 @@ export default function Presentation() {
     year: name,
     value,
     fill: `var(--chart-${index + 1})`,
-  }));
+  })).sort;
 
   const chartConfig = {
     bc_1: {
@@ -60,39 +67,48 @@ export default function Presentation() {
   } satisfies ChartConfig;
 
   return (
-    <div className="p-10">
-      <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-        <BarChart
-          accessibilityLayer
-          data={years}
-          layout="vertical"
-          margin={{
-            left: 0,
-          }}
-        >
-          <YAxis
-            dataKey="year"
-            type="category"
-            tickLine={false}
-            tickMargin={20}
-            fontSize={20}
-            width={250}
-            axisLine={false}
-            tickFormatter={(value) =>
-              chartConfig[value as keyof typeof chartConfig]?.label
-            }
-          />
-          <XAxis dataKey="value" type="number" hide />
-          <Bar dataKey="value" layout="horizontal" radius={10} maxBarSize={50}>
-            <LabelList
-              position="center"
-              className="fill-[#fff]"
-              offset={12}
-              fontSize={20}
+    <Card className="flex flex-col w-full h-full">
+      <CardHeader>
+        <CardTitle>Účast na přednášce</CardTitle>
+        <CardDescription>Rozložení mezi studijní ročníky</CardDescription>
+      </CardHeader>
+      <CardContent className="flex w-full h-full">
+        <ChartContainer config={chartConfig}>
+          <BarChart accessibilityLayer data={years} layout="vertical">
+            <YAxis
+              dataKey="year"
+              type="category"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value) =>
+                chartConfig[value as keyof typeof chartConfig]?.label
+              }
+              hide
             />
-          </Bar>
-        </BarChart>
-      </ChartContainer>
-    </div>
+            <XAxis dataKey="value" type="number" hide />
+            <Bar dataKey="value" layout="vertical" radius={10}>
+              <LabelList
+                dataKey="year"
+                position="insideLeft"
+                className="fill-[#fff]"
+                offset={40}
+                fontSize={20}
+                formatter={(value) =>
+                  chartConfig[value as keyof typeof chartConfig]?.label
+                }
+              />
+              <LabelList
+                dataKey="value"
+                position="insideRight"
+                className="fill-[#fff]"
+                offset={40}
+                fontSize={20}
+              />
+            </Bar>
+          </BarChart>
+        </ChartContainer>
+      </CardContent>
+    </Card>
   );
 }

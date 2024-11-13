@@ -5,6 +5,13 @@ import { ref } from "firebase/database";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
 import { LabelList, Pie, PieChart } from "recharts";
 import { QRCodeCanvas } from "qrcode.react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 
 export default function Presentation() {
   const database = useDatabase();
@@ -82,12 +89,12 @@ export default function Presentation() {
 
     return (
       <text
-        x={x + 25}
-        y={y + 40}
+        x={x}
+        y={y + 30}
         fill="white"
         textAnchor={x > cx ? "start" : "end"}
         dominantBaseline="central"
-        fontSize={25}
+        fontSize={15}
       >
         {`${(percent * 100).toFixed(0)}%`}
       </text>
@@ -95,62 +102,70 @@ export default function Presentation() {
   };
 
   return (
-    <div className="flex w-full h-full">
-      <div className="flex w-1/2 h-full justify-center items-center">
-        <QRCodeCanvas
-          value="https://zijeme-it-24.web.app/"
-          size={500}
-          className="w-full"
-        />
-      </div>
-      <div className="flex flex-col w-1/2 p-10">
-        <ChartContainer config={chartConfig} className="w-full h-1/2">
-          <PieChart>
-            <Pie
-              data={browsers}
-              dataKey="value"
-              nameKey="browser"
-              innerRadius={0}
-              strokeWidth={5}
-              labelLine={false}
-              label={renderCustomizedLabel}
-            >
-              <LabelList
-                dataKey={"browser"}
-                position="middle"
-                className="fill-[#fff]"
-                stroke="none"
-                offset={0}
-                fontSize={25}
-                formatter={(value: keyof typeof chartConfig) => value}
-              />
-            </Pie>
-          </PieChart>
-        </ChartContainer>
-        <ChartContainer config={chartConfig} className="w-full h-1/2">
-          <PieChart>
-            <Pie
-              data={systems}
-              dataKey="value"
-              nameKey="system"
-              innerRadius={0}
-              strokeWidth={5}
-              labelLine={false}
-              label={renderCustomizedLabel}
-            >
-              <LabelList
-                dataKey={"system"}
-                position="middle"
-                className="fill-[#fff]"
-                stroke="none"
-                offset={0}
-                fontSize={25}
-                formatter={(value: keyof typeof chartConfig) => value}
-              />
-            </Pie>
-          </PieChart>
-        </ChartContainer>
-      </div>
-    </div>
+    <Card className="flex flex-col w-full h-full">
+      <CardContent className="flex w-full h-full">
+        <div className="flex w-full h-full overflow-hidden">
+          <div className="flex w-1/2 h-full justify-center items-center">
+            <QRCodeCanvas
+              value="https://zijeme-it-24.web.app/"
+              size={500}
+              className="w-full"
+            />
+          </div>
+          <div className="flex flex-col w-1/2 h-full p-10">
+            <div className="flex w-full h-1/2">
+              <ChartContainer config={chartConfig}>
+                <PieChart>
+                  <Pie
+                    data={browsers}
+                    dataKey="value"
+                    nameKey="browser"
+                    innerRadius={0}
+                    strokeWidth={5}
+                    labelLine={false}
+                    label={renderCustomizedLabel}
+                  >
+                    <LabelList
+                      dataKey={"browser"}
+                      position="middle"
+                      className="fill-[#fff]"
+                      stroke="none"
+                      offset={0}
+                      fontSize={25}
+                      formatter={(value: keyof typeof chartConfig) => value}
+                    />
+                  </Pie>
+                </PieChart>
+              </ChartContainer>
+            </div>
+            <div className="flex w-full h-1/2">
+              <ChartContainer config={chartConfig}>
+                <PieChart>
+                  <Pie
+                    data={systems}
+                    dataKey="value"
+                    nameKey="system"
+                    innerRadius={0}
+                    strokeWidth={5}
+                    labelLine={false}
+                    label={renderCustomizedLabel}
+                  >
+                    <LabelList
+                      dataKey={"system"}
+                      position="middle"
+                      className="fill-[#fff]"
+                      stroke="none"
+                      offset={0}
+                      fontSize={25}
+                      formatter={(value: keyof typeof chartConfig) => value}
+                    />
+                  </Pie>
+                </PieChart>
+              </ChartContainer>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
